@@ -11,6 +11,7 @@ struct QuestionManager {
     let index: String
     let tema: String
     let question: String
+    let answers: [Answer]
 }
 
 struct ChooseAnswerView: View {
@@ -20,10 +21,10 @@ struct ChooseAnswerView: View {
     @State private var selectedQues:String = "問題A"
     
     let questions: [QuestionManager] = [
-        QuestionManager(index: "問題A",tema: "心理健康", question: "あなたのメンタルヘルスの状態はどうですか？"),
-        QuestionManager(index: "問題B",tema: "ストレス管理", question: "あなたはストレスをどのように管理していますか？"),
-        QuestionManager(index: "問題C",tema: "自己評価", question: "自分自身をどう評価しますか？"),
-        QuestionManager(index: "問題D",tema: "人間関係", question: "あなたの人間関係はどのようですか？")
+        QuestionManager(index: "問題A",tema: "心理健康", question: "あなたのメンタルヘルスの状態はどうですか？",answers: Answer.answerA),
+        QuestionManager(index: "問題B",tema: "ストレス管理", question: "あなたはストレスをどのように管理していますか？",answers: Answer.answerB),
+        QuestionManager(index: "問題C",tema: "自己評価", question: "自分自身をどう評価しますか？",answers: Answer.answerC),
+        QuestionManager(index: "問題D",tema: "人間関係", question: "あなたの人間関係はどのようですか？",answers: Answer.answerD)
     ]
     
     
@@ -47,24 +48,37 @@ struct ChooseAnswerView: View {
                 
                 HStack {
                     Text("質問：")
-                        .font(.headline)
                     Spacer()
                 }
+                .font(.headline)
                 
-                Text("\(selectedQuestion.question)")
-                    .font(.headline)
-                
+                HStack {
+                    Text("\(selectedQuestion.question)")
+                    Spacer()
+                }
+                .font(.headline)
                 
                 Spacer()
                 //答え選択
-                ForEach (AnswerA.answerA, id: \.self) { item in
+                ForEach (selectedQuestion.answers, id: \.id) { item in
                     HStack {
                         Text(item.value)
+                            .fixedSize()
                     }
-                    .frame(width:200,alignment: .leading)
+                    .frame(maxWidth:. infinity,alignment: .leading)
                     .padding()
                     .onTapGesture {
-                        //
+                        
+                        if let currentIndex = questions.firstIndex(where: {$0.index == selectedQues}) {
+                            let nextIndex = currentIndex + 1
+                            
+                            if nextIndex < questions.count {
+                                selectedQues = questions[nextIndex].index
+                            } else {
+                                //結果
+                                
+                            }
+                        }
                     }
                 }
                 .border(.gray)
