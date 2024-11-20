@@ -8,14 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedItem: String = "A"
+    
+    let tema = ["A","B","C","D"]
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Picker("", selection: $selectedItem) {
+            ForEach(tema,id: \.self) { item in
+                Text(item).tag(item)
+            }
         }
-        .padding()
+        .pickerStyle(SegmentedPickerStyle())
     }
 }
 
