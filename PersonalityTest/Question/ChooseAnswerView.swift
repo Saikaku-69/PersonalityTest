@@ -77,14 +77,16 @@ struct ChooseAnswerView: View {
                                 
                                 selectedAnswerId = item.id
                                 resultManager.point += item.point ?? 0
-                                
+                                resultManager.isDisable = true
                                 DispatchQueue.main.asyncAfter(deadline:.now() + 0.5) {
                                     
                                     let nextIndex = currentIndex + 1
+                                    resultManager.isDisable = false
+                                    
                                     if nextIndex < questions.count {
                                         selectedQues = questions[nextIndex].index
                                     } else {
-                                        resultManager.showResult = true
+                                        resultManager.generatePersonalityType()
                                         selectedQues = questions[0].index
                                         Answer.resetPoints()
                                     }
@@ -93,6 +95,7 @@ struct ChooseAnswerView: View {
                         }
                     }
                     .border(.gray)
+                    .disabled(resultManager.isDisable)
                 }
             }
             .padding()
